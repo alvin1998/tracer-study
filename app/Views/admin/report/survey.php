@@ -38,7 +38,6 @@
                                     <th>Nomor</th>
                                     <th>NIK</th>
                                     <th>Nama</th>
-                                    <th>Kode Prodi</th>
                                     <th>Tahun Lulus</th>
                                     <th>Aksi</th>
                                 </tr>

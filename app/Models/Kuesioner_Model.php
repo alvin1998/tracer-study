@@ -17,6 +17,9 @@ class Kuesioner_Model {
     function getPersonal($id) {
         return $this->db->table('personal')->where('id', $id)->get()->getRow();
     }
+    function getPersonal2($id) {
+        return $this->db->table('mhs')->where('nim', $id)->get()->getRow();
+    }
 
     function getTraining($id) {
         return $this->db->table('training')->where('id', $id)->get()->getRow();

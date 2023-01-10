@@ -12,12 +12,17 @@ class M_model_Kus {
 
     public function storeDataPendaftar($data)
     {
-        $this->db->table('personal')->insert($data);
+        $this->db->table('pendaftar_pelatihan')->insert($data);
         return $this->db->insertID();
     }
     public function storeDataTrainingr($data)
     {
         $this->db->table('training')->insert($data);
         return $this->db->insertID();
+    }
+
+    public function getData($id)
+    {
+        return   $this->db->table('mhs')->where('nim', $id)->get()->getRow();
     }
 }

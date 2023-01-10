@@ -32,27 +32,28 @@ class Report extends BaseController
         if (!$this->session->get('user_id') || $this->session->get('group') != "admin") {
             return redirect()->to('/');
         }
-        $table = 'personal';
-        $column_order = ['id', 'name', 'nim', 'email', 'whatsapp', 'created_at', 'created_by'];
-        $column_search = ['id', 'name', 'nim', 'email', 'whatsapp', 'created_at', 'created_by'];
+        $table = 'pendaftar_pelatihan pdf';
+        $column_order = ['nim', 'nama', 'training',  'description'];
+        $column_search = ['nim', 'nama', 'training', 'description'];
         $where = ['deleted_at =' => null];       
-        $order = ['id' => 'desc'];
+        $order = ['nim' => 'desc'];
         $no = $this->request->getPost("start");
         $getData = $this->datatables->get_datatables($table, $column_order, $column_search, $order, $where);
         $items = [];
         $nomor = 1;
+        
         foreach ($getData as $key => $v) {
             $no++;
             
             $button = "";
-            $button .='<button type="button" onclick="detail('.$v->id.')" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-bullseye label-icon"></i> Detail</button>&nbsp;&nbsp;';
-            $value = [$v->name, $v->nim, $v->email, $v->whatsapp, $button];
+            $button .='<button type="button" onclick="detail('. "'$v->nim'" .')" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-bullseye label-icon"></i> Detail</button>&nbsp;&nbsp;';
+            $value = [$v->nama, $v->nim, $v->training, $v->description, $button];
             $items[] = $value;
             $nomor++;
         }        
         $output = array(
             "draw" => $this->request->getPost("draw"),
-            "recordsTotal" => $this->datatables->count_all($table, $where),
+            "recordsTotal" => $this->datatables->count_all($table),
             "recordsFiltered" => $this->datatables->count_filtered($table, $column_order, $column_search, $order, $where),
             "data" => $items,
         );
@@ -62,7 +63,7 @@ class Report extends BaseController
 
     function detailPersonal() {
         $id = $this->request->getPost('id');
-        $resp = $this->kuesionerModel->getPersonal($id);
+        $resp = $this->kuesionerModel->getPersonal2($id);
         echo json_encode($resp);
     }
 
@@ -84,7 +85,7 @@ class Report extends BaseController
         $where = ['deleted_at =' => null];       
         $order = ['id' => 'desc'];
         $no = $this->request->getPost("start");
-        $getData = $this->datatables->get_datatables($table, $column_order, $column_search, $order, $where);
+        $getData = $this->datatables->get_datatables1($table, $column_order, $column_search, $order, $where);
         $items = [];
         $nomor = 1;
         foreach ($getData as $key => $v) {
@@ -99,7 +100,7 @@ class Report extends BaseController
         $output = array(
             "draw" => $this->request->getPost("draw"),
             "recordsTotal" => $this->datatables->count_all($table, $where),
-            "recordsFiltered" => $this->datatables->count_filtered($table, $column_order, $column_search, $order, $where),
+            "recordsFiltered" => $this->datatables->count_filtered2($table, $column_order, $column_search, $order, $where),
             "data" => $items,
         );
  
@@ -124,29 +125,30 @@ class Report extends BaseController
         if (!$this->session->get('user_id') || $this->session->get('group') != "admin") {
             return redirect()->to('/');
         }
-        $table = 'registrant';
-        $column_order = ['id', 'code', 'personal_id', 'training_id', 'nomor_mahasiswa', 'nik_mahasiswa', 'nama_mahasiswa', 'email', 'phone', 'kode_prodi', 'tahun_lulus', 'kode_pt', 'npwp', 'created_at', 'created_by'];
-        $column_search = ['id', 'code', 'personal_id', 'training_id', 'nomor_mahasiswa', 'nik_mahasiswa', 'nama_mahasiswa', 'email', 'phone', 'kode_prodi', 'tahun_lulus', 'kode_pt', 'npwp', 'created_at', 'created_by'];
+        $table = 'pendaftar_pelatihan pdf';
+        $column_order = ['nim', 'nama', 'training',  'description'];
+        $column_search = ['nim', 'nama', 'training', 'description'];
         $where = ['deleted_at =' => null];       
-        $order = ['id' => 'desc'];
+        $order = ['nim' => 'desc'];
         $no = $this->request->getPost("start");
         $getData = $this->datatables->get_datatables($table, $column_order, $column_search, $order, $where);
         $items = [];
         $nomor = 1;
+        
         foreach ($getData as $key => $v) {
             $no++;
             
             $button = "";
-            $button .='<button type="button" onclick="detail('.$v->id.')" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-bullseye label-icon"></i> Detail</button>&nbsp;&nbsp;';
-            $button .='<a target="_blank" href="'.base_url('admin/report/print/'.$v->id).'"><button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i class="bx bx-file label-icon"></i> Print</button></a>&nbsp;&nbsp;';
-            $button .='<a target="_blank" href="'.base_url('admin/report/edit/'.$v->code).'"><button type="button" class="btn btn-warning waves-effect btn-label waves-light"><i class="bx bx-bullseye label-icon"></i> Edit</button></a>&nbsp;&nbsp;';
-            $value =[$v->nomor_mahasiswa, $v->nik_mahasiswa, $v->nama_mahasiswa, $v->kode_prodi, $v->tahun_lulus, $button];
+            $button .='<button type="button" onclick="detail('. "'$v->nim'" .')" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-bullseye label-icon"></i> Detail</button>&nbsp;&nbsp;';
+            // $button .='<a target="_blank" href="'.base_url('admin/report/print/'.$v->nim).'"><button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i class="bx bx-file label-icon"></i> Print</button></a>&nbsp;&nbsp;';
+            // $button .='<a target="_blank" href="'.base_url('admin/report/edit/'.$v->code).'"><button type="button" class="btn btn-warning waves-effect btn-label waves-light"><i class="bx bx-bullseye label-icon"></i> Edit</button></a>&nbsp;&nbsp;';
+            $value = [$v->nama, $v->nim, $v->training, $v->description, $button];
             $items[] = $value;
             $nomor++;
         }        
         $output = array(
             "draw" => $this->request->getPost("draw"),
-            "recordsTotal" => $this->datatables->count_all($table, $where),
+            "recordsTotal" => $this->datatables->count_all($table),
             "recordsFiltered" => $this->datatables->count_filtered($table, $column_order, $column_search, $order, $where),
             "data" => $items,
         );

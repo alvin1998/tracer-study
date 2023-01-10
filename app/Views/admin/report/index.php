@@ -37,8 +37,8 @@
                                 <tr>
                                     <th>Nama</th>
                                     <th>Nim</th>
-                                    <th>Email</th>
-                                    <th>No. Whatsapp</th>
+                                    <th>Training</th>
+                                    <th>Deskripsi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -56,7 +56,7 @@
     <!-- container-fluid -->
 </div>
 
-<div class="modal fade" id="detail123Modal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+<div class="modal fade" id="detail123Modal1" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -73,12 +73,12 @@
                     <input type="text" class="form-control" id="nim" readonly="" placeholder="" required="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" readonly="" placeholder="" required="">
+                    <label class="form-label">Ktp</label>
+                    <input type="text" class="form-control" id="Ktp" readonly="" placeholder="" required="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">No. Whatsapp</label>
-                    <input type="text" class="form-control" id="whatsapp" readonly="" placeholder="" required="">
+                    <label class="form-label">Prodi</label>
+                    <input type="text" class="form-control" id="prodi" readonly="" placeholder="" required="">
                 </div>
             </div>
             <div class="modal-footer">
@@ -109,13 +109,15 @@
 
     function detail(id) {
         $.LoadingOverlay('show');
+        console.log(id);
         $.post('<?php echo base_url('admin/report/detailPersonal') ?>', {'id': id}, function(data, textStatus, xhr) {
             $.LoadingOverlay("hide");
-            $('#name').val(data.name);
-            $('#email').val(data.email);
-            $('#whatsapp').val(data.whatsapp);
+            $('#name').val(data.nama);
             $('#nim').val(data.nim);
-            $('#detail123Modal').modal('show');
+            $('#Ktp').val(data.ktp);
+            $('#prodi').val(data.prodi);
+            console.log(data.nama);
+            $('#detail123Modal1').modal('show');
         }, 'json');        
     }
 </script>

@@ -22,23 +22,29 @@ class Home extends BaseController
         return view('index');
     }
 
-    function prosesPersonal() {
-    	$sessionData['personal_name'] = $this->request->getPost('name');
+    function prosesPersonal() 
+    {
+
+      $status = $this->modelKus->getData($this->request->getPost('nim'));
+
+      if($status){
+
     	$sessionData['personal_nim'] = $this->request->getPost('nim');
-    	$sessionData['personal_email'] = $this->request->getPost('email');
-    	$sessionData['personal_whatsapp'] = $this->request->getPost('whatsapp');
     	$this->session->set($sessionData);
-    	return $this->respond(true, 200);
+
+        return $this->respond(true, 200);
+
+    }else{
+        return $this->respond(false, 401);
+      }
+
+
+      return $this->respond(false, 500);
     }
 
     function prosesTraining() {
 
-        $data1 = array(
-            'name' => $this->session->get('personal_name'),
-            'nim' => $this->session->get('personal_nim'),
-            'email' => $this->session->get('personal_email'),
-            'whatsapp' => $this->session->get('personal_whatsapp'),
-        );
+        
 
         $data2 = array(
             'date' => $this->request->getPost('date'),
@@ -48,8 +54,12 @@ class Home extends BaseController
             'created_at' => date('Y-m-d H:i:s'),
         );
 
+        $id = $this->modelKus->storeDataTrainingr($data2);
+        $data1 = array(
+                'nim_mhs' => $this->session->get('personal_nim'),
+                'id_pelatihan' => $id,
+        );
         $this->modelKus->storeDataPendaftar($data1);
-        $this->modelKus->storeDataTrainingr($data2);
         
     	return $this->respond(true, 200);
     }

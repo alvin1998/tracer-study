@@ -156,20 +156,8 @@
             <form method="POST" action="<?= base_url('prosesPersonal'); ?>" id="personal-form">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Nama</label>
-                        <input type="text" class="form-control" required name="name">
-                    </div>
-                    <div class="form-group">
                         <label>NIM</label>
                         <input type="text" class="form-control" required name="nim">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="Email" class="form-control" required name="email">
-                    </div>
-                    <div class="form-group">
-                        <label>Nomor Whatsapp</label>
-                        <input type="text" class="form-control" required name="whatsapp">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -250,13 +238,22 @@
             data: $('#personal-form').serialize(),
             dataType: 'json',
         }).done(function(data, textStatus, jqXHR) {
+
             $.LoadingOverlay('hide');
             $('#personalModal').modal('hide');
             $('#trainingModal').modal('show');
+
         }).fail(function(jqXHR, textStatus, errorThrown) {
             $.LoadingOverlay('hide');
             msg = jqXHR?.responseJSON?.messages?.error ? jqXHR.responseJSON.messages.error : errorThrown;
-            toastr.error(msg, 'Maaf!');
+            if(jqXHR.status == '500'){
+
+                toastr.error(msg, 'Maaf!');
+            }else if(jqXHR.status == '401')
+            {
+                toastr.error('NIM tidak ditemukan', 'Maaf!');
+            }
+
         }).always(function() {
         });
     });
